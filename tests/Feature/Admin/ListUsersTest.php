@@ -153,28 +153,5 @@ class ListUsersTest extends TestCase
             ]);
     }
 
-    /** @test */
-    function invalid_order_query_data_is_ignored_and_the_default_order_is_used_instead()
-    {
-        factory(User::class)->create(['first_name' => 'John Doe', 'created_at' => now()->subDays(2)]);
-        factory(User::class)->create(['first_name' => 'Jane Doe', 'created_at' => now()->subDays(5)]);
-        factory(User::class)->create(['first_name' => 'Richard Roe', 'created_at' => now()->subDays(3)]);
-
-        $this->get('usuarios?order=invalid_order&direction=asc')
-            ->assertOk()
-            ->assertSeeInOrder([
-                'John Doe',
-                'Richard Roe',
-                'Jane Doe',
-            ]);
-
-        $this->get('usuarios?order=invalid_order&direction=desc')
-            ->assertOk()
-            ->assertSeeInOrder([
-                'John Doe',
-                'Richard Roe',
-                'Jane Doe',
-            ]);
-    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Rules\SortableColumn;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class UserFilter extends QueryFilter
             'skills' => 'array|exists:skills,id',
             'from' => 'date_format:d/m/Y',
             'to' => 'date_format:d/m/Y',
-            'order' => 'in:last_name,email,date,last_name-desc,email-desc,date-desc',
+            'order' => [new SortableColumn(['last_name', 'email', 'date'])],
             'trashed' => 'accepted',
         ];
     }
@@ -73,11 +74,9 @@ class UserFilter extends QueryFilter
 
     public function order($query, $value)
     {
-        if (Str::endsWith($value, '-desc')) {
-            $query->orderByDesc($this->getColumnName(Str::before($value, '-desc')));
-        } else {
-            $query->orderBy($this->getColumnName($value));
-        }
+        [$column, $direction] = Sortable::info($value);
+
+        $query->orderBy($this->getColumnName($column), $direction);
     }
 
     public function trashed($query, $value)

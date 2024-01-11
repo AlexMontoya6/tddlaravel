@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Filters;
 
-use App\Rules\SortableColumn;
+use App\Sortable;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Rules\SortableColumn;
 use Illuminate\Support\Facades\DB;
 
 class UserFilter extends QueryFilter

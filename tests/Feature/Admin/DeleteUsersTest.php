@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Admin;
 
-use App\User;
+use App\{User, Skill};
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,7 +17,7 @@ class DeleteUsersTest extends TestCase
             'deleted_at' => now(),
         ]);
 
-        $this->delete('usuarios/'.$user->id)
+        $this->delete('usuarios/' . $user->id)
             ->assertRedirect('usuarios/papelera');
 
         $this->assertDatabaseEmpty('users');
@@ -32,7 +32,7 @@ class DeleteUsersTest extends TestCase
             'deleted_at' => null,
         ]);
 
-        $this->delete('usuarios/'.$user->id)
+        $this->delete('usuarios/' . $user->id)
             ->assertStatus(404);
 
         $this->assertDatabaseHas('users', [
@@ -46,13 +46,21 @@ class DeleteUsersTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->patch('usuarios/'.$user->id.'/papelera')
+
+        $user->skills()->attach(factory(Skill::class)->create());
+
+        $this->patch('usuarios/' . $user->id . '/papelera')
             ->assertRedirect('usuarios');
 
         //Opción 1
         $this->assertSoftDeleted('users', [
             'id' => $user->id,
         ]);
+
+        $this->assertSoftDeleted('skill_user', [
+            'user_id' => $user->id,
+        ]);
+
         $this->assertSoftDeleted('user_profiles', [
             'user_id' => $user->id,
         ]);
@@ -81,4 +89,5 @@ class DeleteUsersTest extends TestCase
             ->assertDontSee('Ellie');
 
     }
+
 }

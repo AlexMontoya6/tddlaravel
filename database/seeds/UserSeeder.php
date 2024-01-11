@@ -50,10 +50,13 @@ class UserSeeder extends Seeder
 
         $user->skills()->attach($this->skills);
 
-        $user->profile()->create([
-            'bio' => 'programador',
-            'profession_id' => $this->professions->where('title', 'Desarrollador Back-End')->first()->id,
-        ]);
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'bio' => 'programador',
+                'profession_id' => rand(0, 2) ? $this->professions->random()->id : null,
+            ]
+        );
 
 
     }

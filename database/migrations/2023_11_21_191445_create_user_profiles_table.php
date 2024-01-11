@@ -22,11 +22,11 @@ class CreateUserProfilesTable extends Migration
             $table->unsignedBigInteger('profession_id')->nullable();
             $table->foreign('profession_id')
                 ->references('id')
-                ->on('professions');
-            //->onDelete('SET NULL');
-            //->onDelete('CASCADE');
+                ->on('professions')
+                ->onDelete('SET NULL')
+                ->onDelete('CASCADE');
 
-            $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')

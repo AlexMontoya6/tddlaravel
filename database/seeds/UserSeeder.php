@@ -47,6 +47,15 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'active' => true,
         ]);
+
+        $user->skills()->attach($this->skills);
+
+        $user->profile()->create([
+            'bio' => 'programador',
+            'profession_id' => $this->professions->where('title', 'Desarrollador Back-End')->first()->id,
+        ]);
+
+
     }
 
     private function createRandomUser(): void
@@ -60,5 +69,15 @@ class UserSeeder extends Seeder
         $numSkills = $this->skills->count();
 
         $user->skills()->attach($this->skills->random(rand(0, $numSkills)));
+
+        $user->profile()->create([
+            'profession_id' => rand(0, 2) ? $this->professions->random()->id : null,
+        ]);
+
+        factory(\App\Login::class)->times(rand(0, 10))->create([
+            'user_id' => $user->id,
+        ]);
+
+
     }
 }

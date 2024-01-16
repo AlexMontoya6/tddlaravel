@@ -1,17 +1,20 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeders.
      *
      * @return void
      */
     public function run()
     {
-        $this->truncateTables(['skill_user', 'skills', 'professions', 'user_profiles', 'users', 'teams', 'logins']);
+        $this->truncateTables(['skill_user','professions', 'users','skills','user_profiles','teams']);
 
         $this->call(ProfessionSeeder::class);
         $this->call(SkillSeeder::class);

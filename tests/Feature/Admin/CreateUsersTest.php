@@ -35,6 +35,7 @@ class CreateUsersTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Crear nuevo usuario')
             ->assertViewHas('professions', function ($professions) use ($profession) {
+                // Comprueba que el array de professions contenga una profesion creada en la BDD
                 return $professions->contains($profession);
             })
             ->assertViewHas('skills', function ($skills) use ($skillA, $skillB) {

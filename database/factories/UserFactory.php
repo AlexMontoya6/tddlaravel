@@ -1,5 +1,6 @@
 <?php
 
+use App\UserProfile;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -26,10 +27,15 @@ $factory->define(App\User::class, function (Faker $faker) {
     ];
 });
 
-$factory->afterCreating(App\User::class, function ($user, $faker) {
-    $user->profile()->save(factory(\App\UserProfile::class)->make());
+//** Crea un perfil al usuario en cuanto se crea */
+$factory->afterCreating(App\User::class, function ($user) {
+    $user->profile()->save(factory(UserProfile::class)->make());
 });
 
+/** Cuando state es inactive, se establece al active false
+ * state es un metodo que tiene predefinido Laravel para definir
+ * estados personalizados
+ */
 $factory->state(\App\User::class, 'inactive', function ($faker) {
     return ['active' => false];
 });

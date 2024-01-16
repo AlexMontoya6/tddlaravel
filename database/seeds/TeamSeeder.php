@@ -1,20 +1,22 @@
 <?php
+namespace Database\Seeders;
 
+use App\Team;
 use Illuminate\Database\Seeder;
 
 class TeamSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeders.
      *
      * @return void
      */
     public function run()
     {
-        factory(\App\Team::class)->create([
+        factory(Team::class)->create([
             'name' => 'IES Ingeniero',
         ]);
 
-        factory(\App\Team::class)->times(99)->create()->unique();
+        factory(Team::class)->times(99)->create()->unique();
     }
 }
